@@ -1,5 +1,7 @@
 package com.justreadit.blog.config;
 
+//just constants that are going to be used in our application
+
 public class AppConstants {
 
 	public static final String PAGE_NUMBER = "0"; 
