@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.justreadit.blog.config.AppConstants;
 import com.justreadit.blog.payload.APIResponse;
 import com.justreadit.blog.payload.PostDto;
 import com.justreadit.blog.payload.PostResponse;
@@ -46,10 +47,10 @@ public class PostController {
 	} 
 	
 	@GetMapping("/posts")
-	public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value = "pageNumber",defaultValue ="0",required = false) Integer pageNumber,
-			                                         @RequestParam(value = "recordsPerPage",defaultValue = "10",required = false) Integer recordsPerPage,
-			                                         @RequestParam(value="sortBy",defaultValue ="postId",required = false) String sortBy, 
-			                                         @RequestParam(value="sortDirection",defaultValue = "asc",required = false) String sortDirection){
+	public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value = "pageNumber",defaultValue =AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+			                                         @RequestParam(value = "recordsPerPage",defaultValue = AppConstants.RECORDS_PER_PAGE,required = false) Integer recordsPerPage,
+			                                         @RequestParam(value="sortBy",defaultValue =AppConstants.SORT_BY,required = false) String sortBy, 
+			                                         @RequestParam(value="sortDirection",defaultValue =AppConstants.SORT_DIRECTION,required = false) String sortDirection){
 		
 		PostResponse postResponse = this.postService.getAllPosts(pageNumber,recordsPerPage,sortBy,sortDirection); 
 		return ResponseEntity.ok(postResponse); 
