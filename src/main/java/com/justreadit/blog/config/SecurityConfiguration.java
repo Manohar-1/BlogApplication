@@ -17,17 +17,13 @@ public class SecurityConfiguration {
 	
 	@Bean
 	public SecurityFilterChain securityFilter(HttpSecurity http) throws Exception{
-		http.authorizeHttpRequests((auth)->auth
-				.requestMatchers("/api/user/{userId}/category/{categoryId}/post","/api/posts/{postId}","/api/users/{userId}","/api/post/{postId}/comments","/api/comments/{commentId}").authenticated()
-				.requestMatchers("/api/categories/","/api/categories/{categoryId}").hasRole("ADMIN")
-				.requestMatchers(HttpMethod.GET,"/api/users/").hasRole("ADMIN")
-				.requestMatchers(HttpMethod.GET,"/api/categories/","/api/categories/{categoryId}","/api/user/{userId}","/api/user/{userId}/posts","/api/category/{categoryId}/posts","/api/posts").permitAll() 
-				.requestMatchers(HttpMethod.POST,"/api/users/").permitAll()
-				.anyRequest().permitAll()
-		)
+		http
 		.csrf().disable()
-		.httpBasic();
-
+		.authorizeHttpRequests()
+		.anyRequest().authenticated()
+        .and() 
+        .httpBasic()
+        ;
 		return http.build();
 	}
 	
