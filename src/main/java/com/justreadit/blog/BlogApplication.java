@@ -3,6 +3,10 @@ package com.justreadit.blog;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import com.justreadit.blog.security.MyUserDetailsService;
+
 import org.modelmapper.ModelMapper;
 @SpringBootApplication
 public class BlogApplication {
@@ -17,4 +21,9 @@ public class BlogApplication {
 		return new ModelMapper();
 	}
 
+	@Bean
+	public UserDetailsService customUserDetailsService() {
+	    return new MyUserDetailsService();
+	}
+	
 }
