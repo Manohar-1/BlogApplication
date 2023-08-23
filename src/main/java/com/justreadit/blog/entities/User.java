@@ -57,13 +57,13 @@ public class User implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-	  List<SimpleGrantedAuthority> simpleGrantedAuthorities = this.roles.stream().map((role)-> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList()); 
+	  Collection<SimpleGrantedAuthority> simpleGrantedAuthorities = this.roles.stream().map((role)-> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
 	  return simpleGrantedAuthorities;
 	}
 
 	@Override
 	public String getUsername() {
-		return this.getUsername();
+		return this.name;
 	}
 
 	@Override

@@ -10,7 +10,10 @@ import com.justreadit.blog.exceptions.ResourceNotFoundException;
 import com.justreadit.blog.payload.CommentDto;
 import com.justreadit.blog.repository.CommentRepo;
 import com.justreadit.blog.repository.PostRepo;
+import com.justreadit.blog.repository.UserRepo;
 import com.justreadit.blog.service.CommentService;
+import com.justreadit.blog.utils.GetCurrentUserDetails;
+import com.justreadit.blog.entities.User;
 
 @Service
 public class CommentServiceImpl implements CommentService{
@@ -22,7 +25,10 @@ public class CommentServiceImpl implements CommentService{
 	private CommentRepo commentRepo; 
 	
 	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper modelMapper; 
+	
+	@Autowired
+	private UserRepo userRepo;
 	
 	
 	@Override
@@ -34,8 +40,15 @@ public class CommentServiceImpl implements CommentService{
 		post.getComments().add(comment); 
 		
 		comment.setPost(post);
+		String currentUserEmail = new GetCurrentUserDetails().getCurrentUser();
+		User commentedUser = userRepo.findByEmail(currentUserEmail).get();  
+		comment.setUser(commentedUser);
+		
 		
 		Comment savedComment = commentRepo.save(comment) ; 
+		
+		
+		
 		
 		
 		return this.modelMapper.map(savedComment,CommentDto.class);
