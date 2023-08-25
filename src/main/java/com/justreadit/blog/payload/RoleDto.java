@@ -7,6 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RoleDto { 
+public class RoleDto {  
+	private Integer id;
 	private String role;
 }

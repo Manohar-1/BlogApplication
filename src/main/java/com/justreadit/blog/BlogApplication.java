@@ -21,9 +21,5 @@ public class BlogApplication {
 		return new ModelMapper();
 	}
 
-	@Bean
-	public UserDetailsService customUserDetailsService() {
-	    return new MyUserDetailsService();
-	}
 	
 }
