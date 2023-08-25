@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService{
 		
 		comment.setPost(post);
 		String currentUserEmail = new GetCurrentUserDetails().getCurrentUser();
-		User commentedUser = userRepo.findByEmail(currentUserEmail).get();  
+		User commentedUser = userRepo.findByNameOrEmail(currentUserEmail).get();  
 		comment.setUser(commentedUser);
 		
 		

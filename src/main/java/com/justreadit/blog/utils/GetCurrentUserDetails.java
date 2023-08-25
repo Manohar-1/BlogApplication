@@ -23,6 +23,8 @@ public class GetCurrentUserDetails {
 	    Authentication authentication = sContext.getAuthentication(); 
 	    System.out.println(authentication.getName()); 
 	    
+	    
+//	    System.out.println(userRepo);
 	    Object principalObject = authentication.getPrincipal(); 
 	    User principalUser = (User)principalObject;
 	    System.out.println(principalUser.getEmail());

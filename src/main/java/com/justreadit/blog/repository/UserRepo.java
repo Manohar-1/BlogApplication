@@ -8,8 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.justreadit.blog.entities.User;
 
-public interface UserRepo extends JpaRepository<User,Integer>{
-	Optional<User> findByEmail(String email);
-	
-	
+public interface UserRepo extends JpaRepository<User,Integer>{	
+	@Query("select u from User u where u.name = :key OR u.email = :key")
+	Optional<User> findByNameOrEmail(@Param("key") String userNameOrEmail); 
 }

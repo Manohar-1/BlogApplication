@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import com.justreadit.blog.payload.APIResponse;
 import com.justreadit.blog.payload.UserDto;
 import com.justreadit.blog.service.UserService;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 
 @RestController
@@ -32,6 +34,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@PermitAll
 	@PostMapping("/")
 	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 		UserDto createUserDto = this.userService.createUser(userDto);
@@ -61,6 +64,8 @@ public class UserController {
 		return new ResponseEntity<>(this.userService.getUserById(userId),HttpStatus.OK);
 	}
 	
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/")
 	public ResponseEntity<List<UserDto>> getAllUsers(){ 
 		return new ResponseEntity<>(this.userService.getAllUsers(),HttpStatus.OK);
