@@ -59,6 +59,7 @@ public class SecurityConfiguration{
 		.disable() 
 		.authorizeHttpRequests() 
 		.requestMatchers(HttpMethod.POST,"api/v1/auth/login").permitAll() 
+		.requestMatchers(HttpMethod.POST,"api/users/").permitAll()
 		.anyRequest().permitAll()
 		.and()
 		.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

@@ -32,6 +32,5 @@ public class UserDto {
 	@NotNull
 	private String about; 
 	
-	
 	private List<RoleDto> roles = new ArrayList<>();
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import com.justreadit.blog.payload.PostResponse;
 import com.justreadit.blog.service.FileService;
 import com.justreadit.blog.service.PostService;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
@@ -45,24 +47,28 @@ public class PostController {
 	private String path;
 	
 	
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@PostMapping("/user/{userId}/category/{categoryId}/post")
 	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,@PathVariable Integer userId,@PathVariable Integer categoryId){
 	   PostDto createPost = this.postService.createPost(postDto, userId, categoryId); 
 	   return new ResponseEntity<>(createPost,HttpStatus.CREATED); 
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@GetMapping("/user/{userId}/posts")
 	public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable Integer userId){
 		List<PostDto> postDtos = this.postService.getPostByUser(userId); 
 		return  ResponseEntity.ok(postDtos);
 	} 
 	
+	@PermitAll
 	@GetMapping("/category/{categoryId}/posts")
 	public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable Integer categoryId){
 		List<PostDto> postDtos = this.postService.getPostByCategory(categoryId); 
 		return ResponseEntity.ok(postDtos);
 	} 
 	
+	@PermitAll
 	@GetMapping("/posts")
 	public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value = "pageNumber",defaultValue =AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
 			                                         @RequestParam(value = "recordsPerPage",defaultValue = AppConstants.RECORDS_PER_PAGE,required = false) Integer recordsPerPage,
@@ -73,12 +79,14 @@ public class PostController {
 		return ResponseEntity.ok(postResponse); 
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@GetMapping("/posts/{postId}")
 	public ResponseEntity<PostDto> getPostById(@PathVariable Integer postId){
 		PostDto postDto = this.postService.getPostById(postId); 
 		return ResponseEntity.ok(postDto);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@GetMapping("/posts/search/{keyword}") 
 	public ResponseEntity<List<PostDto>> getPostBySearch(@PathVariable String keyword){
 		System.out.println("Manohar");
@@ -88,18 +96,21 @@ public class PostController {
 	}
 	
 	//delete
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@DeleteMapping("/posts/{postId}")
 	public ResponseEntity<APIResponse> deletePost(@PathVariable Integer postId){
 		this.postService.deletePost(postId); 
 		return ResponseEntity.ok(new APIResponse("Post deleted successfully...",true));
 	}
 	//update 
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@PutMapping("/posts/{postId}") 
 	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable Integer postId){
 		PostDto updatedPostDto =  this.postService.updatePost(postDto, postId); 
 		return ResponseEntity.ok(updatedPostDto);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@PostMapping("/post/image/upload/{postId}")
 	public ResponseEntity<PostDto> uploadPostImage(@RequestParam("image") MultipartFile image,@PathVariable Integer postId) throws IOException{
 		String fileName = this.fileService.uploadImage(path, image); 
@@ -109,6 +120,7 @@ public class PostController {
 		return ResponseEntity.ok(updatedPost);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@GetMapping(value = "/post/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
 	public void downloadImage(@PathVariable String imageName,HttpServletResponse response) throws IOException {
 		InputStream iStream = this.fileService.getResource(path, imageName);

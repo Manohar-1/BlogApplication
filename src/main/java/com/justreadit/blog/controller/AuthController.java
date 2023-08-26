@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.justreadit.blog.payload.UserDto;
 import com.justreadit.blog.security.JwtAuthRequest;
 import com.justreadit.blog.security.JwtAuthResponse;
 import com.justreadit.blog.security.JwtTokenHelper;
 import com.justreadit.blog.security.MyUserDetailsService;
+import com.justreadit.blog.service.UserService;
 
 @RestController 
 @RequestMapping("/api/v1/auth")
@@ -30,7 +32,10 @@ public class AuthController {
 	private MyUserDetailsService userDetailsService; 
 	
 	@Autowired
-	private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager; 
+	
+	@Autowired
+	private UserService userService;
 	
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request){
@@ -50,6 +55,12 @@ public class AuthController {
 		JwtAuthResponse response = new JwtAuthResponse();  
 		response.setToken(token); 
 		return new ResponseEntity<JwtAuthResponse>(response,HttpStatus.OK);
+	}
+	
+	@PostMapping("/register")
+	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
+		UserDto saveduserDto = this.userService.registerAdmin(userDto); 
+		return new ResponseEntity<>(saveduserDto,HttpStatus.OK);
 	}
 
 	private void authenticate(String userName, String password) {
