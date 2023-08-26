@@ -43,6 +43,7 @@ public class UserController {
 	
 	
 	//PUT - update user 
+	@PreAuthorize("hasRole('USER')")
 	@PutMapping("/{userId}") 
 	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,@PathVariable("userId") Integer userId){
 		UserDto updatedUser = this.userService.updateUser(userDto, userId); 
@@ -51,6 +52,7 @@ public class UserController {
 	}
 	
 	//DELETE - delete user; 
+	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<APIResponse> deleteUser(@PathVariable Integer userId){
 		this.userService.deleteUser(userId); 
@@ -58,7 +60,8 @@ public class UserController {
 	}
 	
 	
-	//GET - user get
+	//GET - user get 
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> getSingleUser(@PathVariable Integer userId){
 		return new ResponseEntity<>(this.userService.getUserById(userId),HttpStatus.OK);
