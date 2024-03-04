@@ -1,4 +1,4 @@
-# Just Read It 📖
+# InsightfulInk 📖
 Just Read It is a simple and user-friendly platform built using Java and Spring Boot technologies. It encompasses a range of CRUD (Create, Read, Update, Delete) features, enabling users to manage their blog posts and accounts effortlessly. The application incorporates REST APIs for seamless functionality and employs Spring Security with JWT for robust authentication and authorization. Users can create, read, update, and delete their posts, as well as comment on them, ensuring a dynamic and engaging user experience.
 
 # Features
